@@ -1,0 +1,58 @@
+# --- C/C++ build artifacts ---
+*.o
+*.obj
+*.exe
+*.out
+*.app
+*.dll
+*.so
+*.dylib
+*.lib
+*.a
+*.la
+*.lo
+*.pdb
+*.idb
+*.ilk
+
+# Build directories
+build/
+Build/
+BUILD/
+cmake-build-debug/
+cmake-build-release/
+CMakeFiles/
+CMakeCache.txt
+*.cmake
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+.egg-info/
+dist/
+.venv/
+venv/
+
+# Jupyter
+.ipynb_checkpoints
+
+# --- Environment / secrets ---
+# dist_env.sh is machine-specific; keep the example only.
+dist_env.sh
+.env
+.env.local
+
+# --- Runtime logs / results ---
+logs/
+*.log
+
+# --- Data (large, generated via tools/) ---
+data/
+
+# --- Misc ---
+.DS_Store
+Thumbs.db
+*~
+*.swp
+*.swo
