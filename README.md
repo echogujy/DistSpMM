@@ -5,20 +5,15 @@
 This is the official implementation of the paper *DistSpMM: Accelerating Sparse
 Matrix Dense Matrix Multiplication on GPUs*. DistSpMM is a distributed sparse-matrix
 dense-matrix multiplication (SpMM) system built on **NVSHMEM**, targeting multi-GPU /
-multi-node clusters (A800 and H100). By co-designing the data layout, the pipeline,
+multi-node clusters (e.g. A800 and H100). By co-designing the data layout, the pipeline,
 and the communication strategy, it significantly reduces the communication overhead
 of distributed SpMM.
-
-> This repository contains only the core implementation of DistSpMM. It does **not**
-> bundle any third-party SOTA baselines. If you wish to reproduce the comparisons,
-> obtain the official implementations of those methods (e.g. CoLa, TileSpMM,
-> MGG-SpMM, CAGNET, SUMMA-1D/2D) yourself.
 
 ## Contributions
 
 The paper makes three co-designed contributions, all implemented in this repository:
 
-1. **HSDMA** (`src/h_sdma.h`): a lightweight algorithm that reduces communication by
+1. **Hierarchical Sparsity-aware Dense Matrix Allocation (HSDMA)** (`src/h_sdma.h`): a lightweight algorithm that reduces communication by
    optimizing the dense-matrix task allocation. It first refines node-level placement
    and then GPU-level placement to minimize total communication.
 2. **Topology-aware two-stage pipeline** (`src/dist_spmm.cu` + `src/comm_man.h`):
@@ -28,13 +23,6 @@ The paper makes three co-designed contributions, all implemented in this reposit
    dynamically chooses the optimal communication granularity (coarse-grained bulk vs.
    fine-grained sparsity-aware) based on data sparsity and network tier.
 
-## Features
-
-- **Tile-based distributed SpMM**: the output is partitioned column-wise into tiles,
-  distributed across GPUs, with NVSHMEM symmetric-memory one-sided `get` communication.
-- **Sparse-aware communication**: per tile, DistSpMM adaptively chooses between dense
-  block communication and sparse communication, transferring only the dense columns
-  corresponding to non-zero columns (`comm_type=2`).
 
 ## Repository layout
 
@@ -118,8 +106,7 @@ Downloaded SuiteSparse matrices, converted to DistSPMM's binary format. This is
 the pipeline used for the real datasets in the paper:
 
 ```bash
-python3 tools/download_suitesparse.py                       # all datasets
-python3 tools/download_suitesparse.py --dataset twitter7    # a single dataset
+python3 tools/download_suitesparse.py --dataset nlpkkt160    # a single dataset
 ```
 
 Each dataset is downloaded from the SuiteSparse Matrix Collection
@@ -146,15 +133,15 @@ cd scripts
 sbatch test_gpu_a800_2gpu.sh
 # or run directly (single node, 2 GPUs):
 mpirun -np 2 -npernode 2 ./build/dist_spmm_node \
-    data/web-Google/web-Google 128 2 2 4 10 4
+    data/nlpkkt160/nlpkkt160 128 2 2 4 10 4
 ```
 
-Expected output (abridged) after the run:
+Expected output after the run:
 
 ```
 task_distribution: 2 and rolls:4
 1 1 0 0 0 0 1 1
-Running dist_spmm programs on data/web-Google/web-Google with [128] dims
+Running dist_spmm programs on data/nlpkkt160/nlpkkt160 with [128] dims
 Processing time: (ms)
 Re-allocation time(all): 0.225 Hira Time: 0.005
 Max memory used: 2.985 GB
@@ -335,14 +322,18 @@ The kernels report (aggregated by rank 0):
 If you use this work in your research, please cite:
 
 ```bibtex
-@article{gudistspmm,
-  title   = {DistSpMM: Accelerating Sparse Matrix Dense Matrix Multiplication on GPUs},
-  author  = {Gu, Junyu and Wang, Jue and Xin, Zhikuang and Zhou, Chunbao and
-             Liang, Zhiqiang and Pang, Yuchen and Cao, Rongqiang and Wang, Zongguo
-             and Liu, Fang and Wang, Jing and Wang, Yangang},
-  journal = {ACM Transactions on Architecture and Code Optimization (TACO)},
-  year    = {2026}
+@article{distspmm10.1145/3841478,
+author = {Gu, Junyu and Wang, Jue and Xin, Zhikuang and Zhou, Chunbao and Liang, Zhiqiang and Pang, Yuchen and Cao, Rongqiang and Wang, Zongguo and Liu, Fang and Wang, Jing and Wang, Yangang},
+title = {DistSpMM: Accelerating Sparse Matrix Dense Matrix Multiplication on GPUs},
+year = {2026},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+issn = {1544-3566},
+url = {https://doi.org/10.1145/3841478},
+doi = {10.1145/3841478},
+note = {Just Accepted},
+journal = {ACM Trans. Archit. Code Optim.},
+month = aug,
+keywords = {SpMM, Adaptive Communication, Multi-GPU}
 }
 ```
-
-(Update the journal/volume/pages once the final metadata is available.)
