@@ -15,8 +15,7 @@ format expected by `scripts/` and `run_all.sh`.
 
 Run inside the `datapass` conda environment:
     conda activate datapass
-    python3 tools/download_suitesparse.py                      # all datasets
-    python3 tools/download_suitesparse.py --dataset twitter7   # one dataset
+    python3 tools/download_suitesparse.py --dataset nlpkkt160
 """
 
 import argparse
@@ -30,7 +29,7 @@ from scipy.io import mmread
 # SuiteSparse Matrix Collection URLs (sparse.tamu.edu).
 # `web-Google` is a small graph (0.9M x 0.9M, ~5 MB) used as a quick example.
 DATA_DICT = {
-    "web-Google": "https://sparse.tamu.edu/MM/SNAP/web-Google.tar.gz",
+    "nlpkkt160": "https://sparse.tamu.edu/MM/Schenk/nlpkkt160.tar.gz",
 }
 
 
