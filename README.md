@@ -326,14 +326,17 @@ If you use this work in your research, please cite:
 author = {Gu, Junyu and Wang, Jue and Xin, Zhikuang and Zhou, Chunbao and Liang, Zhiqiang and Pang, Yuchen and Cao, Rongqiang and Wang, Zongguo and Liu, Fang and Wang, Jing and Wang, Yangang},
 title = {DistSpMM: Accelerating Sparse Matrix Dense Matrix Multiplication on GPUs},
 year = {2026},
+issue_date = {December 2026},
 publisher = {Association for Computing Machinery},
 address = {New York, NY, USA},
+volume = {23},
+number = {4},
 issn = {1544-3566},
 url = {https://doi.org/10.1145/3841478},
 doi = {10.1145/3841478},
-note = {Just Accepted},
-journal = {ACM Trans. Archit. Code Optim.},
-month = aug,
-keywords = {SpMM, Adaptive Communication, Multi-GPU}
+month = sep,
+articleno = {133},
+numpages = {26},
+keywords = {SpMM, adaptive communication, multi-GPU}
 }
 ```
